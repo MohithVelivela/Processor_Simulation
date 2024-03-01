@@ -1,5 +1,11 @@
 package generic;
 
+import java.io.DataInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+
 import processor.Clock;
 import processor.Processor;
 
@@ -28,10 +34,35 @@ public class Simulator {
 		 *     x1 = 65535
 		 *     x2 = 65535
 		 */
+		try{
+			InputStream x=new FileInputStream(assemblyProgramFile);
+			DataInputStream y=new DataInputStream(x);
+			int n=0;
+			if(y.available()>0){
+				n=y.readInt();
+				processor.getRegisterFile().setProgramCounter(n);
+			}
+			for(int a=0;y.available()>0;a++){
+				n=y.readInt();
+				processor.getMainMemory().setWord(a, n);
+			}
+			processor.getRegisterFile().setValue(0, 0);
+			processor.getRegisterFile().setValue(1, 65535);
+			processor.getRegisterFile().setValue(2, 65535);
+			y.close();
+		}
+		catch(IOException e){
+			System.err.println(assemblyProgramFile);
+		}
+		catch(FileNotFoundException e){
+			System.err.println(assemblyProgramFile);
+		}
 	}
 	
 	public static void simulate()
 	{
+		int instructions;
+		int cycles;
 		while(simulationComplete == false)
 		{
 			processor.getIFUnit().performIF();
@@ -44,6 +75,8 @@ public class Simulator {
 		
 		// TODO
 		// set statistics
+		Statistics.setNumberOfInstructions(instructions);
+		Statistics.setNumberOfCycles(cycles);
 	}
 	
 	public static void setSimulationComplete(boolean value)
