@@ -15,19 +15,23 @@ public class InstructionFetch {
 		this.IF_EnableLatch = iF_EnableLatch;
 		this.IF_OF_Latch = iF_OF_Latch;
 		this.EX_IF_Latch = eX_IF_Latch;
+
 	}
 	
 	public void performIF()
 	{
+		IF_EnableLatch.setIF_enable(true);
 		if(IF_EnableLatch.isIF_enable())
 		{
 			int currentPC = containingProcessor.getRegisterFile().getProgramCounter();
 			int newInstruction = containingProcessor.getMainMemory().getWord(currentPC);
 			IF_OF_Latch.setInstruction(newInstruction);
+			// Add here about the branch taken from Execute Unit later
 			containingProcessor.getRegisterFile().setProgramCounter(currentPC + 1);
 			
 			IF_EnableLatch.setIF_enable(false);
 			IF_OF_Latch.setOF_enable(true);
+
 		}
 	}
 

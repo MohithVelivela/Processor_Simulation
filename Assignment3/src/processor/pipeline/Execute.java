@@ -16,9 +16,21 @@ public class Execute {
 		this.EX_IF_Latch = eX_IF_Latch;
 	}
 	
-	public void performEX()
-	{
+	public void performEX() {
 		//TODO
+		if(OF_EX_Latch.isEX_enable()){
+			// Branching part of the Execute Unit
+			
+
+		}
+
+
+
+
+
+
+
 	}
+
 
 }

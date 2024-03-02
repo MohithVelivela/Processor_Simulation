@@ -54,9 +54,6 @@ public class Simulator {
 		catch(IOException e){
 			System.err.println(assemblyProgramFile);
 		}
-		catch(FileNotFoundException e){
-			System.err.println(assemblyProgramFile);
-		}
 	}
 	
 	public static void simulate()
@@ -75,8 +72,8 @@ public class Simulator {
 		
 		// TODO
 		// set statistics
-		Statistics.setNumberOfInstructions(instructions);
-		Statistics.setNumberOfCycles(cycles);
+		//Statistics.setNumberOfInstructions(instructions);
+		//Statistics.setNumberOfCycles(cycles);
 	}
 	
 	public static void setSimulationComplete(boolean value)
