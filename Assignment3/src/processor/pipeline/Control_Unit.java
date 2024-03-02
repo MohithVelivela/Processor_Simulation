@@ -79,7 +79,9 @@ public class Control_Unit {
     }
 
     public void setOpcode(int opcode){Opcode = opcode;}
-
+    public String getOpcode(){
+        return Opcode_str;
+    }
     public boolean[] inttoBooleanArray(int num, int size){
         boolean[] bits = new boolean[size];
         for(int i=size-1;i>=0;i--)

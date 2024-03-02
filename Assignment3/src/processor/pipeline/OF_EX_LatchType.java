@@ -9,7 +9,7 @@ public class OF_EX_LatchType {
 
 	int Operand1;
 	int Operand2;
-
+	int Instruction;
 	
 	public OF_EX_LatchType()
 	{
@@ -23,7 +23,12 @@ public class OF_EX_LatchType {
 	public void setEX_enable(boolean eX_enable) {
 		EX_enable = eX_enable;
 	}
-
+	public int getInstruction(){
+		return Instruction;
+	}
+	public void setInstruction(int instruction){
+		Instruction = instruction;
+	}
 	public void  setImmediate(int immediate){Immediate = immediate;}
 
 	public int getImmediate(){return Immediate;}

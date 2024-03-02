@@ -4,6 +4,7 @@ import generic.Simulator;
 import processor.Processor;
 
 public class RegisterWrite {
+	Control_Unit control_unit;
 	Processor containingProcessor;
 	MA_RW_LatchType MA_RW_Latch;
 	IF_EnableLatchType IF_EnableLatch;
@@ -19,6 +20,21 @@ public class RegisterWrite {
 	{
 		if(MA_RW_Latch.isRW_enable())
 		{
+			boolean Wb = MA_RW_Latch.isWb();
+			int ldResult= MA_RW_Latch.getldResult();
+			int aluOutput = MA_RW_Latch.getAluOutput();
+			int rd = MA_RW_Latch.getOperand2();
+			int writevalue;
+			if(Wb){
+				if(control_unit.isLd()){
+					writevalue = ldResult;
+				}
+				else{
+					writevalue = aluOutput;
+				}
+				RegisterFile registerFile = containingProcessor.getRegisterFile();
+				registerFile.setValue(rd, writevalue);
+			}
 			MA_RW_Latch.setRW_enable(false);
 			IF_EnableLatch.setIF_enable(true);
 		}

@@ -49,6 +49,7 @@ public class OperandFetch {
 			//TODO
 			int currentPC = containingProcessor.getRegisterFile().getProgramCounter(); //getting the PC value
 			int newInstruction = IF_OF_Latch.getInstruction(); // Collecting the instruction passed by IF from IF_OF_Latch
+			OF_EX_Latch.setInstruction(newInstruction);
 			boolean[] bit_instruction = new boolean[32];
 			bit_instruction = inttoBooleanArray(newInstruction); //Converting the Instruction in Integer to binary
 			// Immediate Calculation

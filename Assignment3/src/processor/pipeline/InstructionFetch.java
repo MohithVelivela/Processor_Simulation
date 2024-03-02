@@ -27,11 +27,17 @@ public class InstructionFetch {
 			int newInstruction = containingProcessor.getMainMemory().getWord(currentPC);
 			IF_OF_Latch.setInstruction(newInstruction);
 			// Add here about the branch taken from Execute Unit later
-			containingProcessor.getRegisterFile().setProgramCounter(currentPC + 1);
-			
+			boolean b = EX_IF_Latch.getBranchTaken();
+			int branch = EX_IF_Latch.getBranchtarget();
+			if(b){
+				currentPC = branch;
+			}
+			else{
+				currentPC +=1;
+			}
 			IF_EnableLatch.setIF_enable(false);
 			IF_OF_Latch.setOF_enable(true);
-
+			containingProcessor.getRegisterFile().setProgramCounter(currentPC);
 		}
 	}
 
