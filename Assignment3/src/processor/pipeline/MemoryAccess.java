@@ -8,12 +8,13 @@ public class MemoryAccess {
 	Processor containingProcessor;
 	EX_MA_LatchType EX_MA_Latch;
 	MA_RW_LatchType MA_RW_Latch;
-	Control_Unit control_Unit;
-	public MemoryAccess(Processor containingProcessor, EX_MA_LatchType eX_MA_Latch, MA_RW_LatchType mA_RW_Latch)
+	Control_Unit control_unit;
+	public MemoryAccess(Processor containingProcessor, EX_MA_LatchType eX_MA_Latch, MA_RW_LatchType mA_RW_Latch, Control_Unit Control_unit)
 	{
 		this.containingProcessor = containingProcessor;
 		this.EX_MA_Latch = eX_MA_Latch;
 		this.MA_RW_Latch = mA_RW_Latch;
+		this.control_unit = Control_unit;
 	}
 	
 	public void performMA()
@@ -22,7 +23,7 @@ public class MemoryAccess {
 		boolean Wb=true;
 		int op2 = EX_MA_Latch.getOperand2();
 		if(EX_MA_Latch.isMA_enable()){
-			String opcode = control_Unit.getOpcode();
+			String opcode = control_unit.getOpcode();
 			int aluOutput = EX_MA_Latch.getAluOutput();
 			MA_RW_Latch.setAluOutput(aluOutput);
 			if(opcode.equals("load")){

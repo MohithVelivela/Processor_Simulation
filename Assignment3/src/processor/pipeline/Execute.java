@@ -12,12 +12,13 @@ public class Execute {
 	EX_IF_LatchType EX_IF_Latch;
 	private boolean b;
 
-	public Execute(Processor containingProcessor, OF_EX_LatchType oF_EX_Latch, EX_MA_LatchType eX_MA_Latch, EX_IF_LatchType eX_IF_Latch)
+	public Execute(Processor containingProcessor, OF_EX_LatchType oF_EX_Latch, EX_MA_LatchType eX_MA_Latch, EX_IF_LatchType eX_IF_Latch, Control_Unit Control_unit)
 	{
 		this.containingProcessor = containingProcessor;
 		this.OF_EX_Latch = oF_EX_Latch;
 		this.EX_MA_Latch = eX_MA_Latch;
 		this.EX_IF_Latch = eX_IF_Latch;
+		this.control_unit = Control_unit;
 	}
 	
 	public void performEX() {
@@ -31,7 +32,7 @@ public class Execute {
 			// Maybe this part should be changed(see this later regarding branchtarget of all kinds os branch statements.
 			EX_IF_Latch.setBranchtarget(BranchTarget);
 			EX_IF_Latch.setBranchTaken(IsBranchTaken); // to be continued .......
-			String operation  = Control_Unit.map_operation_name.get(control_unit.getOpcode());//gets the instruction from OF_EX_Latch
+			String operation  = control_unit.map_operation_name.get(control_unit.getOpcode());//gets the instruction from OF_EX_Latch
 			//pass instruction to next latch(to be done.)
 			
 			

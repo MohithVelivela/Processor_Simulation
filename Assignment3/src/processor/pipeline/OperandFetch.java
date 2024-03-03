@@ -7,7 +7,6 @@ public class OperandFetch {
 	Processor containingProcessor;
 	IF_OF_LatchType IF_OF_Latch;
 	OF_EX_LatchType OF_EX_Latch;
-
 	Control_Unit control_unit;
 
 	public boolean[] inttoBooleanArray(int num){
@@ -35,11 +34,12 @@ public class OperandFetch {
 		return num;
 	}
 	
-	public OperandFetch(Processor containingProcessor, IF_OF_LatchType iF_OF_Latch, OF_EX_LatchType oF_EX_Latch)
+	public OperandFetch(Processor containingProcessor, IF_OF_LatchType iF_OF_Latch, OF_EX_LatchType oF_EX_Latch, Control_Unit Control_unit)
 	{
 		this.containingProcessor = containingProcessor;
 		this.IF_OF_Latch = iF_OF_Latch;
 		this.OF_EX_Latch = oF_EX_Latch;
+		this.control_unit = Control_unit;
 	}
 	
 	public void performOF()

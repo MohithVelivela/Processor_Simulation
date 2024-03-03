@@ -80,6 +80,8 @@ public class Control_Unit {
 
     public void setOpcode(int opcode){Opcode = opcode;}
     public String getOpcode(){
+        boolean[] op =  inttoBooleanArray(this.Opcode,5);
+        Opcode_str = Bool_array_to_str(op);
         return Opcode_str;
     }
     public boolean[] inttoBooleanArray(int num, int size){
