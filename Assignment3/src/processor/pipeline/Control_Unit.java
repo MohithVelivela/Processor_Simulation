@@ -1,10 +1,12 @@
 package processor.pipeline;
-
+import processor.Processor;
 import java.util.*;
-
 public class Control_Unit {
-
-    public static Map<String, String> map_operation_name = new HashMap<String, String>() {{
+    Processor containingProcessor;
+    public Control_Unit(Processor containingProcessor){
+        this.containingProcessor = containingProcessor;
+    }
+    public Map<String, String> map_operation_name = new HashMap<String, String>() {{
         put("00000", "add");
         put("00001", "addi");
         put("00010", "sub");
@@ -60,62 +62,20 @@ public class Control_Unit {
     boolean And;
     boolean Xor;
 
-    int Opcode;
     String Opcode_str = "";
+    int rd;
+    
 
-    public String Bool_array_to_str(boolean[] opcode){
-        String op ="";
-        for(int i=4;i>=0;i--)
-        {
-            if(opcode[i])
-            {
-                op+='1';
-            }
-            else{
-                op+='0';
-            }
-        }
-        return op;
-    }
-
-    public void setOpcode(int opcode){Opcode = opcode;}
+    public void setOpcode(String opcode){Opcode_str = opcode;}
     public String getOpcode(){
         return Opcode_str;
     }
-    public boolean[] inttoBooleanArray(int num, int size){
-        boolean[] bits = new boolean[size];
-        for(int i=size-1;i>=0;i--)
-        {
-            bits[i] = (num % 2 == 1);
-            num/=2;
-
-        }
-        return bits;
+    public void setrd(int x){
+        this.rd = x;
     }
-
-    public int BooleanArraytoInt(boolean[] bits, int size)
-    {
-        int n = size;
-        int num = 0;
-        int multiplier = 1;
-        for (int i = n-1; i >= 0; i--) {
-            if (bits[i]) {
-                num += multiplier;
-            }
-            multiplier *= 2;
-        }
-        return num;
+    public int getrd(){
+        return rd;
     }
-
-    boolean[] Opcode_in_bits = inttoBooleanArray(Opcode,5);
-
-    // Converting Boolean_array to string for opcode
-
-
-    public void setOpcode_str() {
-        this.Opcode_str = Bool_array_to_str(this.Opcode_in_bits);
-    }
-
     public boolean isSt(){return St;}
 
     public void setSt(boolean st) {

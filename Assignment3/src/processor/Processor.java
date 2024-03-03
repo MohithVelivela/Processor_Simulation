@@ -13,6 +13,7 @@ import processor.pipeline.OF_EX_LatchType;
 import processor.pipeline.OperandFetch;
 import processor.pipeline.RegisterFile;
 import processor.pipeline.RegisterWrite;
+import processor.pipeline.Control_Unit;
 
 public class Processor {
 	
@@ -25,6 +26,7 @@ public class Processor {
 	EX_MA_LatchType EX_MA_Latch;
 	EX_IF_LatchType EX_IF_Latch;
 	MA_RW_LatchType MA_RW_Latch;
+	Control_Unit control_unit;
 	
 	InstructionFetch IFUnit;
 	OperandFetch OFUnit;
@@ -43,12 +45,13 @@ public class Processor {
 		EX_MA_Latch = new EX_MA_LatchType();
 		EX_IF_Latch = new EX_IF_LatchType();
 		MA_RW_Latch = new MA_RW_LatchType();
+		control_unit = new Control_Unit(this);
 		
 		IFUnit = new InstructionFetch(this, IF_EnableLatch, IF_OF_Latch, EX_IF_Latch);
-		OFUnit = new OperandFetch(this, IF_OF_Latch, OF_EX_Latch);
-		EXUnit = new Execute(this, OF_EX_Latch, EX_MA_Latch, EX_IF_Latch);
-		MAUnit = new MemoryAccess(this, EX_MA_Latch, MA_RW_Latch);
-		RWUnit = new RegisterWrite(this, MA_RW_Latch, IF_EnableLatch);
+		OFUnit = new OperandFetch(this, IF_OF_Latch, OF_EX_Latch, control_unit);
+		EXUnit = new Execute(this, OF_EX_Latch, EX_MA_Latch, EX_IF_Latch,control_unit);
+		MAUnit = new MemoryAccess(this, EX_MA_Latch, MA_RW_Latch,control_unit);
+		RWUnit = new RegisterWrite(this, MA_RW_Latch, IF_EnableLatch, control_unit);
 	}
 	
 	public void printState(int memoryStartingAddress, int memoryEndingAddress)

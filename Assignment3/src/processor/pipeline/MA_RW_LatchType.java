@@ -43,4 +43,5 @@ public class MA_RW_LatchType {
 	public void setOperand2(int x){
 		this.op2 = x;
 	}
+	
 }

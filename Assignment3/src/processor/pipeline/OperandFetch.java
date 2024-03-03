@@ -1,7 +1,7 @@
 package processor.pipeline;
 
 import processor.Processor;
-import java.util.Arrays;
+//import java.util.Arrays;
 
 public class OperandFetch {
 	Processor containingProcessor;
@@ -10,36 +10,35 @@ public class OperandFetch {
 
 	Control_Unit control_unit;
 
-	public boolean[] inttoBooleanArray(int num){
-		boolean[] bits = new boolean[32];
+	public String int_to_String(int num){
+		String x = "";
 		for(int i=31;i>=0;i--)
 		{
-			bits[i] = (num % 2 == 1);
-			num/=2;
-
-		}
-		return bits;
-	}
-
-	public int BooleanArraytoInt(boolean[] bits, int size)
-	{
-		int n = size;
-		int num = 0;
-		int multiplier = 1;
-		for (int i = n-1; i >= 0; i--) {
-			if (bits[i]) {
-				num += multiplier;
+			if(num%2 == 0){
+				x = '0'+x;
 			}
-			multiplier *= 2;
+			else{
+				x = '1' + x;
+			}
+			num=num/2;
 		}
-		return num;
+		return x;
+	}
+	public String int_to_string(int number) {
+		StringBuilder binary = new StringBuilder();
+		for (int i = 31; i >= 0; i--) {
+			int bit = (number >> i) & 1;
+			binary.append(bit);
+		}
+		return binary.toString();
 	}
 	
-	public OperandFetch(Processor containingProcessor, IF_OF_LatchType iF_OF_Latch, OF_EX_LatchType oF_EX_Latch)
+	public OperandFetch(Processor containingProcessor, IF_OF_LatchType iF_OF_Latch, OF_EX_LatchType oF_EX_Latch, Control_Unit control_Unit)
 	{
 		this.containingProcessor = containingProcessor;
 		this.IF_OF_Latch = iF_OF_Latch;
 		this.OF_EX_Latch = oF_EX_Latch;
+		this.control_unit = control_Unit;
 	}
 	
 	public void performOF()
@@ -48,28 +47,32 @@ public class OperandFetch {
 		{
 			//TODO
 			int currentPC = containingProcessor.getRegisterFile().getProgramCounter(); //getting the PC value
-			int newInstruction = IF_OF_Latch.getInstruction(); // Collecting the instruction passed by IF from IF_OF_Latch
+			int newInstruction = IF_OF_Latch.getInstruction(); 
+			
+			// Collecting the instruction passed by IF from IF_OF_Latch
 			OF_EX_Latch.setInstruction(newInstruction);
-			boolean[] bit_instruction = new boolean[32];
-			bit_instruction = inttoBooleanArray(newInstruction); //Converting the Instruction in Integer to binary
+			String bit_instruction = "";
+			bit_instruction = int_to_string(newInstruction); //Converting the Instruction in Integer to binary
 			// Immediate Calculation
-			boolean[] Immediate = Arrays.copyOfRange(bit_instruction, 0, 17);
-			int Immediate_int = BooleanArraytoInt(Immediate,17);
+			String Immediate = bit_instruction.substring(15, 32);
+			//System.out.println(bit_instruction);
+			int Immediate_int = Integer.parseInt(Immediate,2);
 			OF_EX_Latch.setImmediate(Immediate_int);
 			// Branch Target Calculation
-			boolean[] BranchTarget = Arrays.copyOfRange(bit_instruction,0,22);
-			int BranchTarget_int = BooleanArraytoInt(BranchTarget,22);
+			String BranchTarget = bit_instruction.substring(0,22);
+			int BranchTarget_int = Integer.parseInt(BranchTarget,2);
+			//System.out.println(BranchTarget_int);
 			OF_EX_Latch.setBranchTarget(BranchTarget_int);
 			// Calculating Operands
 			//Calculating the register for operand1 rs1 : 22 : 26 bits
-			boolean[] Operand1 = Arrays.copyOfRange(bit_instruction,22,27);
-			int Operand1_Reg = BooleanArraytoInt(Operand1,5);
+			String Operand1 = bit_instruction.substring(5,10);
+			int Operand1_Reg = Integer.parseInt(Operand1,2);
 
 			//Calculating the registers for rd and rs2 for Operand2 : rd : 12:16, rs2 : 17 : 21
-			boolean[] rd = Arrays.copyOfRange(bit_instruction,12,17);
-			boolean[] rs2 = Arrays.copyOfRange(bit_instruction, 17,22);
-			int rd_int = BooleanArraytoInt(rd,5);
-			int rs2_int = BooleanArraytoInt(rs2,5);
+			String rd = bit_instruction.substring(15,20);
+			String rs2 = bit_instruction.substring(10,15);
+			int rd_int = Integer.parseInt(rd,2);
+			int rs2_int = Integer.parseInt(rs2,2);
 			int Operand2_Reg;
 			if(control_unit.isSt()){
 				Operand2_Reg = rd_int;
@@ -84,13 +87,20 @@ public class OperandFetch {
 
 			OF_EX_Latch.setOperand1(Operand1_int);
 			OF_EX_Latch.setOperand2(Operand2_int);
-
+			control_unit.setrd(rd_int);
 			// Sending the Opcode for the Control Unit for Generating Signals
-			boolean[] Opcode = Arrays.copyOfRange(bit_instruction,27,32);
-			int Opcode_int = BooleanArraytoInt(Opcode,5);
-			control_unit.setOpcode(Opcode_int);
+			String Opcode = bit_instruction.substring(0,5);
+			int Opcode_int = Integer.parseInt(Opcode,2);
+			/*if(Opcode_int != 0){
+				System.out.println(Operand1_int);
+				System.out.println(Operand2_int);
+				System.out.println(Immediate_int);
+				System.out.println(BranchTarget_int);
+			}*/
+			control_unit.setOpcode(Opcode);
 			IF_OF_Latch.setOF_enable(false);
 			OF_EX_Latch.setEX_enable(true);
+			System.out.println(rd_int);
 		}
 	}
 

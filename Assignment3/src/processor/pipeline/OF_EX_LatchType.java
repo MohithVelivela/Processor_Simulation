@@ -10,7 +10,7 @@ public class OF_EX_LatchType {
 	int Operand1;
 	int Operand2;
 	int Instruction;
-	
+	int rd;
 	public OF_EX_LatchType()
 	{
 		EX_enable = false;

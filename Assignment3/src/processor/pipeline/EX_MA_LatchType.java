@@ -37,6 +37,5 @@ public class EX_MA_LatchType {
 		return op1;
 	}
 	
-	
 
 }

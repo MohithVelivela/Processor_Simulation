@@ -11,6 +11,9 @@ public class EX_IF_LatchType {
 	{
 		IF_Enable = false;
 	}
+	public void setIF_Enable(boolean value){
+		IF_Enable = value;
+	}
 	public void setBranchtarget(int branchtarget){
 		Branchtarget = branchtarget;
 	}

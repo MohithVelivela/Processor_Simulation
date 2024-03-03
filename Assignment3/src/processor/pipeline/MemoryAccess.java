@@ -1,6 +1,4 @@
 package processor.pipeline;
-
-import generic.Instruction;
 import processor.Processor;
 import processor.memorysystem.MainMemory;
 
@@ -8,28 +6,31 @@ public class MemoryAccess {
 	Processor containingProcessor;
 	EX_MA_LatchType EX_MA_Latch;
 	MA_RW_LatchType MA_RW_Latch;
-	Control_Unit control_Unit;
-	public MemoryAccess(Processor containingProcessor, EX_MA_LatchType eX_MA_Latch, MA_RW_LatchType mA_RW_Latch)
+	Control_Unit control_unit;
+	public MemoryAccess(Processor containingProcessor, EX_MA_LatchType eX_MA_Latch, MA_RW_LatchType mA_RW_Latch,Control_Unit control_Unit)
 	{
 		this.containingProcessor = containingProcessor;
 		this.EX_MA_Latch = eX_MA_Latch;
 		this.MA_RW_Latch = mA_RW_Latch;
+		this.control_unit = control_Unit;
 	}
 	
 	public void performMA()
 	{
-		//TODO
 		boolean Wb=true;
 		int op2 = EX_MA_Latch.getOperand2();
 		if(EX_MA_Latch.isMA_enable()){
-			String opcode = control_Unit.getOpcode();
+			String opcode = control_unit.getOpcode();
+			String Operation = control_unit.map_operation_name.get(opcode);
 			int aluOutput = EX_MA_Latch.getAluOutput();
 			MA_RW_Latch.setAluOutput(aluOutput);
-			if(opcode.equals("load")){
+			if(Operation.equals("load")){
+				//System.out.println("Value of Address"+aluOutput);
 				int load = containingProcessor.getMainMemory().getWord(aluOutput);
+				//System.out.println("Value at Address"+load);
 				MA_RW_Latch.setldResult(load);
 			}
-			else if(opcode.equals("store")){
+			else if(Operation.equals("store")){
 				Wb=false;
 				int r1 = EX_MA_Latch.getOperand1();
 				MainMemory memory = containingProcessor.getMainMemory();
@@ -42,5 +43,4 @@ public class MemoryAccess {
 		MA_RW_Latch.setWB(Wb);
 		MA_RW_Latch.setOperand2(op2);
 	}
-
 }
