@@ -57,6 +57,9 @@ public class OperandFetch {
 			String Immediate = bit_instruction.substring(15, 32);
 			//System.out.println(bit_instruction);
 			int Immediate_int = Integer.parseInt(Immediate,2);
+			if(Immediate.charAt(0) == '1'){
+				Immediate_int = Immediate_int - 131070;
+			}
 			OF_EX_Latch.setImmediate(Immediate_int);
 			// Branch Target Calculation
 			String BranchTarget = bit_instruction.substring(0,22);
@@ -73,25 +76,22 @@ public class OperandFetch {
 			String rs2 = bit_instruction.substring(10,15);
 			int rd_int = Integer.parseInt(rd,2);
 			int rs2_int = Integer.parseInt(rs2,2);
-			int Operand2_Reg;
-			if(control_unit.isSt()){
-				Operand2_Reg = rd_int;
-			}
-			else{
-				Operand2_Reg = rs2_int;
-			}
+			String Opcode = bit_instruction.substring(0,5);
+			int Opcode_int = Integer.parseInt(Opcode,2);
+			int Operand2_Reg = rs2_int;
+			
 			// Fetching Operand1 and Operand2 from Register File
 
 			int Operand1_int = containingProcessor.getRegisterFile().getValue(Operand1_Reg);
 			int Operand2_int = containingProcessor.getRegisterFile().getValue(Operand2_Reg);
-
+			int OperandD = containingProcessor.getRegisterFile().getValue(rd_int);
 			OF_EX_Latch.setOperand1(Operand1_int);
 			OF_EX_Latch.setOperand2(Operand2_int);
+			OF_EX_Latch.setrd(OperandD);
 			control_unit.setop2(Operand2_Reg);
 			control_unit.setop1(Operand1_Reg);
 			// Sending the Opcode for the Control Unit for Generating Signals
-			String Opcode = bit_instruction.substring(0,5);
-			int Opcode_int = Integer.parseInt(Opcode,2);
+			
 			/*if(Opcode_int != 0){
 				System.out.println(Operand1_int);
 				System.out.println(Operand2_int);
@@ -101,7 +101,7 @@ public class OperandFetch {
 			control_unit.setOpcode(Opcode);
 			IF_OF_Latch.setOF_enable(false);
 			OF_EX_Latch.setEX_enable(true);
-			System.out.println(rd_int);
+			//System.out.println(bit_instruction);
 		}
 	}
 

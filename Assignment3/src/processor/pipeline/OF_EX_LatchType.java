@@ -44,5 +44,10 @@ public class OF_EX_LatchType {
 	public void setOperand2(int operand2){Operand2 = operand2;}
 
 	public int getOperand2(){return Operand2;}
-
+	public void setrd(int x){
+		this.rd = x;
+	}
+	public int getrd(){
+		return rd;
+	}
 }

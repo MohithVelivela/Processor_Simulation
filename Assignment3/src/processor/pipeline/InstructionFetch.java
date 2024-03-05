@@ -29,6 +29,9 @@ public class InstructionFetch {
 			// Add here about the branch taken from Execute Unit later
 			boolean b = EX_IF_Latch.getBranchTaken();
 			int branch = EX_IF_Latch.getBranchtarget();
+			System.out.println("currentPC" + currentPC);
+			System.out.println("branch"+branch);
+			System.out.println("Logic" + b);
 			if(b){
 				currentPC = branch;
 			}
@@ -38,6 +41,7 @@ public class InstructionFetch {
 			IF_EnableLatch.setIF_enable(false);
 			IF_OF_Latch.setOF_enable(true);
 			containingProcessor.getRegisterFile().setProgramCounter(currentPC);
+			System.out.println("currentPC after update" + currentPC);
 		}
 	}
 

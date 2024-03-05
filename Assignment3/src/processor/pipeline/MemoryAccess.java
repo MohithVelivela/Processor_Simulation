@@ -34,8 +34,7 @@ public class MemoryAccess {
 			else if(Operation.equals("store")){
 				Wb=false;
 				int r1 = EX_MA_Latch.getOperand1();
-				MainMemory memory = containingProcessor.getMainMemory();
-				memory.setWord(aluOutput,r1);
+				containingProcessor.getMainMemory().setWord(aluOutput, r1);
 
 			}
 			else if(Operation.equals("beq") || Operation.equals("blt") || Operation.equals("bgt") || Operation.equals("bne") || Operation.equals("jmp")){Wb=false;}
