@@ -19,11 +19,12 @@ public class MemoryAccess {
 	{
 		boolean Wb=true;
 		int op2 = EX_MA_Latch.getOperand2();
+		int aluOutput = EX_MA_Latch.getAluOutput();
+			MA_RW_Latch.setAluOutput(aluOutput);
 		if(EX_MA_Latch.isMA_enable()){
 			String opcode = control_unit.getOpcode();
 			String Operation = control_unit.map_operation_name.get(opcode);
-			int aluOutput = EX_MA_Latch.getAluOutput();
-			MA_RW_Latch.setAluOutput(aluOutput);
+			
 			if(Operation.equals("load")){
 				//System.out.println("Value of Address"+aluOutput);
 				int load = containingProcessor.getMainMemory().getWord(aluOutput);
@@ -37,10 +38,12 @@ public class MemoryAccess {
 				memory.setWord(aluOutput,r1);
 
 			}
+			else if(Operation.equals("beq") || Operation.equals("blt") || Operation.equals("bgt") || Operation.equals("bne") || Operation.equals("jmp")){Wb=false;}
 		}
 		EX_MA_Latch.setMA_enable(false);//try changing to small e(this.)
 		MA_RW_Latch.setRW_enable(true);
 		MA_RW_Latch.setWB(Wb);
 		MA_RW_Latch.setOperand2(op2);
+		//System.out.println("aluOutput in MA" + aluOutput);
 	}
 }

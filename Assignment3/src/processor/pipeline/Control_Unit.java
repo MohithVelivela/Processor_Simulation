@@ -63,18 +63,25 @@ public class Control_Unit {
     boolean Xor;
 
     String Opcode_str = "";
-    int rd;
+    int op2;
+    int op1;
     
 
     public void setOpcode(String opcode){Opcode_str = opcode;}
     public String getOpcode(){
         return Opcode_str;
     }
-    public void setrd(int x){
-        this.rd = x;
+    public void setop2(int x){
+        this.op2 = x;
     }
-    public int getrd(){
-        return rd;
+    public int getop2(){
+        return op2;
+    }
+    public void setop1(int x){
+        this.op1 = x;
+    }
+    public int getop1(){
+        return op1;
     }
     public boolean isSt(){return St;}
 

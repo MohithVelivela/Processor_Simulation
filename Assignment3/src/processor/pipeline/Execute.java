@@ -36,6 +36,7 @@ public class Execute {
 		int operand1 = OF_EX_Latch.getOperand1();
 		int imm = OF_EX_Latch.getImmediate();
 		int operand2 = OF_EX_Latch.getOperand2();
+		control_unit.setLd(false);
 		int nowPc = containingProcessor.getRegisterFile().getProgramCounter();
 				switch(operation){
 					case "addi":
@@ -50,6 +51,8 @@ public class Execute {
 					case "divi":
 						aluOutput = operand1/imm;
 						containingProcessor.getRegisterFile().setValue(31, operand1%imm);
+						//System.out.println(operand1%imm);
+						//System.out.println(containingProcessor.getRegisterFile().getValue(31));
 						break;
 					case "andi":
 						aluOutput = operand1&imm;
@@ -171,7 +174,10 @@ public class Execute {
 						System.out.print("Issue detected in R2I type, for branch statements");
 						
 				}	
-			//System.out.println("ALU_out_inExecute "+aluOutput);	
+			//System.out.println("Op1 "+operand1);	
+			//System.out.println("Op2 "+operand2);
+			//System.out.println("Immediate "+imm);			
+			//System.out.println("ALU_out_inExecute "+aluOutput);
 			EX_MA_Latch.setMA_enable(true);
 			OF_EX_Latch.setEX_enable(false);
 			EX_MA_Latch.setAluOutput(aluOutput);

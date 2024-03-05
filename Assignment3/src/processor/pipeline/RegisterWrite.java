@@ -27,7 +27,7 @@ public class RegisterWrite {
 				//System.out.println("Ld_res "+ldResult);
 				int aluOutput = MA_RW_Latch.getAluOutput();
 				//System.out.println("ALU_out "+aluOutput);
-				int rd = control_unit.getrd();
+				int rd = control_unit.getop2();
 				//System.out.println("Destination_reg  "+rd);
 				int writevalue;
 				if(control_unit.isLd()){

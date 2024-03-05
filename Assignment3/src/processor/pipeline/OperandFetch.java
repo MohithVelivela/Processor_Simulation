@@ -87,7 +87,8 @@ public class OperandFetch {
 
 			OF_EX_Latch.setOperand1(Operand1_int);
 			OF_EX_Latch.setOperand2(Operand2_int);
-			control_unit.setrd(rd_int);
+			control_unit.setop2(Operand2_Reg);
+			control_unit.setop1(Operand1_Reg);
 			// Sending the Opcode for the Control Unit for Generating Signals
 			String Opcode = bit_instruction.substring(0,5);
 			int Opcode_int = Integer.parseInt(Opcode,2);
