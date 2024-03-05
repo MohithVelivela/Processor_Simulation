@@ -122,7 +122,7 @@ public class Execute {
 					case "beq":
 						if(operand1==operand2){
 							EX_IF_Latch.setBranchTaken(true);
-							EX_IF_Latch.setBranchtarget(nowPc + imm);
+							EX_IF_Latch.setBranchtarget(nowPc + imm );
 							EX_IF_Latch.setIF_Enable(true);
 						}
 						else{
@@ -132,7 +132,7 @@ public class Execute {
 					case "bgt":
 						if(operand1>operand2){
 							EX_IF_Latch.setBranchTaken(true);
-							EX_IF_Latch.setBranchtarget(nowPc + imm);
+							EX_IF_Latch.setBranchtarget(nowPc + imm );
 							EX_IF_Latch.setIF_Enable(true);
 
 						}
@@ -143,7 +143,7 @@ public class Execute {
 					case "bne":
 						if(operand1!=operand2){
 							EX_IF_Latch.setBranchTaken(true);
-							EX_IF_Latch.setBranchtarget(nowPc + imm);
+							EX_IF_Latch.setBranchtarget(nowPc + imm );
 							EX_IF_Latch.setIF_Enable(true);
 
 						}
@@ -154,7 +154,7 @@ public class Execute {
 					case "blt":
 						if(operand1<operand2){
 							EX_IF_Latch.setBranchTaken(true);
-							EX_IF_Latch.setBranchtarget(nowPc + imm);
+							EX_IF_Latch.setBranchtarget(nowPc + imm );
 							EX_IF_Latch.setIF_Enable(true);
 
 						}

@@ -56,10 +56,29 @@ public class OperandFetch {
 			// Immediate Calculation
 			String Immediate = bit_instruction.substring(15, 32);
 			//System.out.println(bit_instruction);
-			int Immediate_int = Integer.parseInt(Immediate,2);
-			if(Immediate.charAt(0) == '1'){
-				Immediate_int = Immediate_int - 131070;
+			int Immediate_int;
+			if (Immediate.charAt(0) == '1') {
+				// If it's a negative number, calculate the two's complement
+				String twosComplement = "";
+				for (int i = 0; i < Immediate.length(); i++) {
+					// Flip all the bits (0s to 1s, and 1s to 0s)
+					twosComplement += (Immediate.charAt(i) == '0') ? '1' : '0';
+				}
+				// Convert the two's complement to its integer representation
+				Immediate_int = -(Integer.parseInt(twosComplement, 2) + 1);
+			} else {
+				// If it's a positive number, convert the binary string to an integer directly
+				Immediate_int = Integer.parseInt(Immediate, 2);
 			}
+
+
+
+
+
+
+
+
+
 			OF_EX_Latch.setImmediate(Immediate_int);
 			// Branch Target Calculation
 			String BranchTarget = bit_instruction.substring(0,22);
@@ -101,7 +120,7 @@ public class OperandFetch {
 			control_unit.setOpcode(Opcode);
 			IF_OF_Latch.setOF_enable(false);
 			OF_EX_Latch.setEX_enable(true);
-			//System.out.println(bit_instruction);
+			System.out.println(Immediate_int);
 		}
 	}
 
