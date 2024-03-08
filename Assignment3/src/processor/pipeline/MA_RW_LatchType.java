@@ -37,10 +37,10 @@ public class MA_RW_LatchType {
 	public boolean isWb(){
 		return Wb;
 	}
-	public int getOperand2(){
+	public int getrd(){
 		return op2;
 	}
-	public void setOperand2(int x){
+	public void setrd(int x){
 		this.op2 = x;
 	}
 	

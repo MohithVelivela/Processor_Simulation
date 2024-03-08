@@ -37,154 +37,224 @@ public class Execute {
 		int imm = OF_EX_Latch.getImmediate();
 		int operand2 = OF_EX_Latch.getOperand2();
 		control_unit.setLd(false);
-		int nowPc = containingProcessor.getRegisterFile().getProgramCounter();
-				switch(operation){
-					case "addi":
-						aluOutput = operand1 + imm;
-						break;
-					case "subi":
-						aluOutput = operand1 - imm;
-						break;
-					case "muli":
-						aluOutput = operand1*imm;
-						break;
-					case "divi":
-						aluOutput = operand1/imm;
-						containingProcessor.getRegisterFile().setValue(31, operand1%imm);
-						//System.out.println(operand1%imm);
-						//System.out.println(containingProcessor.getRegisterFile().getValue(31));
-						break;
-					case "andi":
-						aluOutput = operand1&imm;
-						break;
-					case "ori":
-						aluOutput = operand1 | imm;
-						break;
-					case "xori":
-						aluOutput = operand1 ^ imm;
-						break;
-					case "slti":
-						aluOutput = 0;
-						if(imm > operand1) aluOutput = 1;
-						break;
-					case "slli": 
-						aluOutput = operand1 << imm;
-						break;
-					case "srli": 
-						aluOutput = operand1 >>> imm;
-						break;
-					case "srai": 
-						aluOutput = operand1 >> imm;
-						break;
-					case "load":
-						aluOutput = operand1 + imm;
-						control_unit.setLd(true);
-						break;
-					case "store":
-						aluOutput = operand2 + imm;
-						control_unit.setSt(true);
-						break;
-					case "add":
-						aluOutput = operand1 + operand2;
-						break;
-					case "sub":
-						aluOutput = operand1 - operand2;
-						break;
-					case "mul":
-						aluOutput = operand1 * operand2;
-						break;
-					case "div":
-						aluOutput = operand1 / operand2;
-						containingProcessor.getRegisterFile().setValue(31, operand1%operand2);
-						break;
-					case "and": 
-						aluOutput = operand1 & operand2;
-						break;
-					case "or":
-						aluOutput = operand1 | operand2;
-						break;
-					case "xor":
-						aluOutput = operand1 ^ operand2;
-						break;
-					case "slt":
-						aluOutput = 0;
-						if(operand2 > operand1) aluOutput = 1;
-						break;
-					case "sll":
-						aluOutput = operand1 << operand2;
-						break;
-					case "srl":
-						aluOutput = operand1 >>> operand2;
-						break;
-					case "sra":
-						aluOutput = operand1 >> operand2;
-						break;
-					case "beq":
-						if(operand1==operand2){
-							EX_IF_Latch.setBranchTaken(true);
-							EX_IF_Latch.setBranchtarget(nowPc + imm );
-							EX_IF_Latch.setIF_Enable(true);
-						}
-						else{
-							EX_IF_Latch.setBranchTaken(false);
-						}
-						break;
-					case "bgt":
-						if(operand1>operand2){
-							EX_IF_Latch.setBranchTaken(true);
-							EX_IF_Latch.setBranchtarget(nowPc + imm );
-							EX_IF_Latch.setIF_Enable(true);
+		int nowPc = containingProcessor.getRegisterFile().getProgramCounter()-1;
+		System.out.println(operation);
+		EX_MA_Latch.setMA_enable(true);
+		switch(operation){
+			case "addi":
+				operand1 = OF_EX_Latch.getOperand1();
+				imm = OF_EX_Latch.getImmediate();
+				aluOutput = operand1 + imm;
+				break;
+			case "subi":
+				operand1 = OF_EX_Latch.getOperand1();
+				imm = OF_EX_Latch.getImmediate();
+				aluOutput = operand1 - imm;
+				break;
+			case "muli":
+				operand1 = OF_EX_Latch.getOperand1();
+				imm = OF_EX_Latch.getImmediate();
+				aluOutput = operand1*imm;
+				break;
+			case "divi":
+				operand1 = OF_EX_Latch.getOperand1();
+				imm = OF_EX_Latch.getImmediate();
+				aluOutput = operand1/imm;
+				//System.out.println(aluOutput);
+				containingProcessor.getRegisterFile().setValue(31, operand1%imm);
+				break;
+			case "andi":
+				operand1 = OF_EX_Latch.getOperand1();
+				imm = OF_EX_Latch.getImmediate();
+				aluOutput = operand1&imm;
+				break;
+			case "ori":
+				operand1 = OF_EX_Latch.getOperand1();
+				imm = OF_EX_Latch.getImmediate();
+				aluOutput = operand1 | imm;
+				break;
+			case "xori":
+				operand1 = OF_EX_Latch.getOperand1();
+				imm = OF_EX_Latch.getImmediate();
+				aluOutput = operand1 ^ imm;
+				break;
+			case "slti":
+				operand1 = OF_EX_Latch.getOperand1();
+				imm = OF_EX_Latch.getImmediate();
+				aluOutput = 0;
+				if(imm > operand1) aluOutput = 1;
+				break;
+			case "slli": 
+				operand1 = OF_EX_Latch.getOperand1();
+				imm = OF_EX_Latch.getImmediate();
+				aluOutput = operand1 << imm;
+				break;
+			case "srli": 
+				operand1 = OF_EX_Latch.getOperand1();
+				imm = OF_EX_Latch.getImmediate();
+				aluOutput = operand1 >>> imm;
+				break;
+			case "srai": 
+				operand1 = OF_EX_Latch.getOperand1();
+				imm = OF_EX_Latch.getImmediate();
+				aluOutput = operand1 >> imm;
+				break;
+			case "load":
+				operand1 = OF_EX_Latch.getOperand1();
+				imm = OF_EX_Latch.getImmediate();
+				aluOutput = operand1 + imm;
+				control_unit.setLd(true);
+				break;
+			case "store":
+				operand1 = OF_EX_Latch.getOperand1();
+				operand2 = OF_EX_Latch.getrd_store_value();
+				imm = OF_EX_Latch.getImmediate();
+				aluOutput = operand2 + imm;
+				control_unit.setSt(true);
+				EX_MA_Latch.setOperand1(operand1);
+				break;
+			case "add":
+				operand1 = OF_EX_Latch.getOperand1();
+				operand2 = OF_EX_Latch.getOperand2();
+				aluOutput = operand1 + operand2;
+				break;
+			case "sub":
+				operand1 = OF_EX_Latch.getOperand1();
+				operand2 = OF_EX_Latch.getOperand2();
+				aluOutput = operand1 - operand2;
+				break;
+			case "mul":
+				operand1 = OF_EX_Latch.getOperand1();
+				operand2 = OF_EX_Latch.getOperand2();
+				aluOutput = operand1 * operand2;
+				break;
+			case "div":
+				operand1 = OF_EX_Latch.getOperand1();
+				operand2 = OF_EX_Latch.getOperand2();
+				aluOutput = operand1 / operand2;
+				//containingProcessor.getRegisterFile().setValue(31, operand1%operand2);  testing?
+				break; 
+			case "and": 
+				operand1 = OF_EX_Latch.getOperand1();
+				operand2 = OF_EX_Latch.getOperand2();
+				aluOutput = operand1 & operand2;
+				break;
+			case "or":
+				operand1 = OF_EX_Latch.getOperand1();
+				operand2 = OF_EX_Latch.getOperand2();
+				aluOutput = operand1 | operand2;
+				break;
+			case "xor":
+				operand1 = OF_EX_Latch.getOperand1();
+				operand2 = OF_EX_Latch.getOperand2();
+				aluOutput = operand1 ^ operand2;
+				break;
+			case "slt":
+				operand1 = OF_EX_Latch.getOperand1();
+				operand2 = OF_EX_Latch.getOperand2();
+				aluOutput = 0;
+				if(operand2 > operand1) aluOutput = 1;
+				break;
+			case "sll":
+				operand1 = OF_EX_Latch.getOperand1();
+				operand2 = OF_EX_Latch.getOperand2();
+				aluOutput = operand1 << operand2;
+				break;
+			case "srl":
+				operand1 = OF_EX_Latch.getOperand1();
+				operand2 = OF_EX_Latch.getOperand2();
+				aluOutput = operand1 >>> operand2;
+				break;
+			case "sra":
+				operand1 = OF_EX_Latch.getOperand1();
+				operand2 = OF_EX_Latch.getOperand2();
+				aluOutput = operand1 >> operand2;
+				break;
+			case "beq":
+				operand1 = OF_EX_Latch.getOperand1();
+				operand2 = OF_EX_Latch.getrd_store_value();
+				imm = OF_EX_Latch.getImmediate();
+				if(operand1==operand2){
+					EX_IF_Latch.setBranchTaken(true);
+					EX_IF_Latch.setBranchtarget(nowPc + imm);
+					EX_IF_Latch.setIF_Enable(true);
+				}
+				else{
+					EX_IF_Latch.setBranchTaken(false);
+				}
+				break;
+			case "bgt":
+				operand1 = OF_EX_Latch.getOperand1();
+				operand2 = OF_EX_Latch.getrd_store_value();
+				imm = OF_EX_Latch.getImmediate();
+				if(operand1>operand2){
+					EX_IF_Latch.setBranchTaken(true);
+					EX_IF_Latch.setBranchtarget(nowPc + imm);
+					EX_IF_Latch.setIF_Enable(true);
 
-						}
-						else{
-							EX_IF_Latch.setBranchTaken(false);
-						}
-						break;
-					case "bne":
-						if(operand1!=operand2){
-							EX_IF_Latch.setBranchTaken(true);
-							EX_IF_Latch.setBranchtarget(nowPc + imm );
-							EX_IF_Latch.setIF_Enable(true);
+				}
+				else{
+					EX_IF_Latch.setBranchTaken(false);
+				}
+				break;
+			case "bne":
+				operand1 = OF_EX_Latch.getOperand1();
+				operand2 = OF_EX_Latch.getrd_store_value();
+				imm = OF_EX_Latch.getImmediate();
+				if(operand1!=operand2){
+					EX_IF_Latch.setBranchTaken(true);
+					EX_IF_Latch.setBranchtarget(nowPc + imm);
+					EX_IF_Latch.setIF_Enable(true);
 
-						}
-						else{
-							EX_IF_Latch.setBranchTaken(false);
-						}
-						break;
-					case "blt":
-						if(operand1<operand2){
-							EX_IF_Latch.setBranchTaken(true);
-							EX_IF_Latch.setBranchtarget(nowPc + imm );
-							EX_IF_Latch.setIF_Enable(true);
+				}
+				else{
+					EX_IF_Latch.setBranchTaken(false);
+				}
+				break;
+			case "blt":
+				operand1 = OF_EX_Latch.getOperand1();
+				operand2 = OF_EX_Latch.getrd_store_value();
+				imm = OF_EX_Latch.getImmediate();
+				if(operand1<operand2){
+					EX_IF_Latch.setBranchTaken(true);
+					EX_IF_Latch.setBranchtarget(nowPc + imm);
+					EX_IF_Latch.setIF_Enable(true);
 
-						}
-						else{
-							EX_IF_Latch.setBranchTaken(false);
-						}
-						break;
-					case "jmp":
-						EX_IF_Latch.setBranchTaken(true);
-						EX_IF_Latch.setBranchtarget(OF_EX_Latch.getBranchTarget());
-						EX_IF_Latch.setIF_Enable(true);
-						break;
-					case "end":
-						Simulator.setSimulationComplete(true);
-						break;
-					default:
-						System.out.print("Issue detected in R2I type, for branch statements");
-						
-				}	
+				}
+				else{
+					EX_IF_Latch.setBranchTaken(false);
+				}
+				break;
+			case "jmp":
+				// Branching part of the Execute Unit
+				BranchTarget = OF_EX_Latch.getBranchTarget();
+				// Generating IsBranchTaken signal,the only signal generated by unit other than Control Unit.
+				// Maybe this part should be changed(see this later regarding branchtarget of all kinds os branch statements.
+				EX_IF_Latch.setBranchtarget(BranchTarget);
+				//EX_IF_Latch.setBranchTaken(IsBranchTaken); // to be continued .......
+				EX_IF_Latch.setBranchTaken(true);
+				int rd = OF_EX_Latch.getrd();
+				imm = OF_EX_Latch.getImmediate();
+				EX_IF_Latch.setBranchtarget(nowPc + imm + rd);
+				EX_IF_Latch.setIF_Enable(true);
+				break;
+			case "end":
+				control_unit.setEnd(true);
+				Simulator.setSimulationComplete(true);
+				break;
+			default:
+				System.out.print("Issue detected in R2I type, for branch statements");
+				
+		}	
 			//System.out.println("Op1 "+operand1);	
 			//System.out.println("Op2 "+operand2);
 			//System.out.println("Immediate "+imm);			
 			//System.out.println("ALU_out_inExecute "+aluOutput);
-			EX_MA_Latch.setMA_enable(true);
+			
 			OF_EX_Latch.setEX_enable(false);
 			EX_MA_Latch.setAluOutput(aluOutput);
-			EX_MA_Latch.setOperand2(operand2);
-			EX_MA_Latch.setOperand1(operand1);
-			System.out.println(operation);
-			System.out.println("/////");
+			EX_MA_Latch.setrd(OF_EX_Latch.getrd());
+			//System.out.println("................................................................");
 		}
 
 

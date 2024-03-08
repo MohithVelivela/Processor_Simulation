@@ -28,14 +28,14 @@ public class InstructionFetch {
 				containingProcessor.getRegisterFile().setProgramCounter(newPC);
 			}
 			int currentPC = containingProcessor.getRegisterFile().getProgramCounter();
-			System.out.println("Current:" + currentPC);
+			//System.out.println("Current:" + currentPC);
 			int newInstruction = containingProcessor.getMainMemory().getWord(currentPC);
 			IF_OF_Latch.setInstruction(newInstruction);
 			// Add here about the branch taken from Execute Unit later
 			IF_EnableLatch.setIF_enable(false);
 			IF_OF_Latch.setOF_enable(true);
 			containingProcessor.getRegisterFile().setProgramCounter(currentPC + 1);
-			System.out.println("Next:" + (currentPC + 1));
+			//System.out.println("Next:" + (currentPC + 1));
 		}
 	}
 

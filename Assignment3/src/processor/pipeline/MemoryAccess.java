@@ -18,9 +18,9 @@ public class MemoryAccess {
 	public void performMA()
 	{
 		boolean Wb=true;
-		int op2 = EX_MA_Latch.getOperand2();
+		//int op2 = EX_MA_Latch.getOperand2();
 		int aluOutput = EX_MA_Latch.getAluOutput();
-			MA_RW_Latch.setAluOutput(aluOutput);
+		MA_RW_Latch.setAluOutput(aluOutput);
 		if(EX_MA_Latch.isMA_enable()){
 			String opcode = control_unit.getOpcode();
 			String Operation = control_unit.map_operation_name.get(opcode);
@@ -35,14 +35,17 @@ public class MemoryAccess {
 				Wb=false;
 				int r1 = EX_MA_Latch.getOperand1();
 				containingProcessor.getMainMemory().setWord(aluOutput, r1);
-
+				System.out.println("Stored " + r1 + "at" + aluOutput);
+				System.out.println("Contents at" + aluOutput+ " =" +containingProcessor.getMainMemory().getWord(aluOutput) );
 			}
-			else if(Operation.equals("beq") || Operation.equals("blt") || Operation.equals("bgt") || Operation.equals("bne") || Operation.equals("jmp")){Wb=false;}
+			else if(Operation.equals("beq") || Operation.equals("blt") || Operation.equals("bgt") || Operation.equals("bne") || Operation.equals("jmp") || Operation.equals("end")){Wb=false;}
 		}
 		EX_MA_Latch.setMA_enable(false);//try changing to small e(this.)
 		MA_RW_Latch.setRW_enable(true);
 		MA_RW_Latch.setWB(Wb);
-		MA_RW_Latch.setOperand2(op2);
+		MA_RW_Latch.setrd(EX_MA_Latch.getrd());
+		//System.out.println(EX_MA_Latch.getrd());
 		//System.out.println("aluOutput in MA" + aluOutput);
+		System.out.println(Wb);
 	}
 }

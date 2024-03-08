@@ -6,6 +6,7 @@ public class EX_MA_LatchType {
 	int aluOutput;
 	int op2;
 	int op1;
+	int rd;
 	public EX_MA_LatchType()
 	{
 		MA_enable = false;
@@ -36,6 +37,11 @@ public class EX_MA_LatchType {
 	public int getOperand1(){
 		return op1;
 	}
-	
+	public void setrd(int x){
+		rd = x;
+	}
+	public int getrd(){
+		return rd;
+	}
 
 }

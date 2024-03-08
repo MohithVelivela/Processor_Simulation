@@ -11,6 +11,7 @@ public class OF_EX_LatchType {
 	int Operand2;
 	int Instruction;
 	int rd;
+	int rd_store_value;
 	public OF_EX_LatchType()
 	{
 		EX_enable = false;
@@ -50,4 +51,12 @@ public class OF_EX_LatchType {
 	public int getrd(){
 		return rd;
 	}
+	public void setrd_store_value(int valueatrd){
+		rd_store_value = valueatrd;
+	}
+
+	public int getrd_store_value(){
+		return rd_store_value;
+	}
+
 }

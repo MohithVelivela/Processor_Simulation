@@ -38,7 +38,38 @@ public class Control_Unit {
         put("11100", "bgt");
         put("11101", "end");
     }};
-
+    public Map<String, String> map_operation_type = new HashMap<String, String>() {{
+        put("00000", "r3");
+        put("00001", "r2i");
+        put("00010", "r3");
+        put("00011", "r2i");
+        put("00100", "r3");
+        put("00101", "r2i");
+        put("00110", "r3");
+        put("00111", "r2i");
+        put("01000", "r3");
+        put("01001", "r2i");
+        put("01010", "r3");
+        put("01011", "r2i");
+        put("01100", "r3");
+        put("01101", "r2i");
+        put("01110", "r3");
+        put("01111", "r2i");
+        put("10000", "r3");
+        put("10001", "r2i");
+        put("10010", "r3");
+        put("10011", "r2i");
+        put("10100", "r3");
+        put("10101", "r2i");
+        put("10110", "r2i");
+        put("10111", "r2i");
+        put("11000", "ri");
+        put("11001", "r2i");
+        put("11010", "r2i");
+        put("11011", "r2i");
+        put("11100", "r2i");
+        put("11101", "ri");
+    }};
 
 
     boolean St;
@@ -65,7 +96,7 @@ public class Control_Unit {
     String Opcode_str = "";
     int op2;
     int op1;
-    
+     
 
     public void setOpcode(String opcode){Opcode_str = opcode;}
     public String getOpcode(){

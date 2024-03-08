@@ -22,13 +22,14 @@ public class RegisterWrite {
 		if(MA_RW_Latch.isRW_enable())
 		{
 			boolean Wb = MA_RW_Latch.isWb();
+			System.out.println(Wb);
 			if(Wb){
 				int ldResult= MA_RW_Latch.getldResult();
 				//System.out.println("Ld_res "+ldResult);
 				int aluOutput = MA_RW_Latch.getAluOutput();
-				//System.out.println("ALU_out "+aluOutput);
-				int rd = control_unit.getop2();
-				//System.out.println("Destination_reg  "+rd);
+				System.out.println("ALU_out "+aluOutput);
+				int rd = MA_RW_Latch.getrd();
+				System.out.println("Destination_reg  "+rd);
 				int writevalue;
 				if(control_unit.isLd()){
 					writevalue = ldResult;
@@ -36,17 +37,16 @@ public class RegisterWrite {
 				else{
 					writevalue = aluOutput;
 				}
-				//System.out.println("Value_in_dest_reg  "+writevalue);
+				System.out.println("Value_in_dest_reg  "+writevalue);
 				RegisterFile registerFile = containingProcessor.getRegisterFile();
 				//System.out.println(rd);
 				//System.out.println(writevalue);
 				registerFile.setValue(rd, writevalue);
+				System.out.println("Written " + writevalue +"to register no."+rd);
 			}
 			MA_RW_Latch.setRW_enable(false);
 			IF_EnableLatch.setIF_enable(true);
-			if(control_unit.isEnd()){
-				Simulator.setSimulationComplete(Wb);
-			}
+			System.out.println(".................................");
 		}
 	}
 

@@ -1,5 +1,6 @@
 package processor.pipeline;
 
+import generic.Operand;
 import processor.Processor;
 //import java.util.Arrays;
 
@@ -45,83 +46,95 @@ public class OperandFetch {
 	{
 		if(IF_OF_Latch.isOF_enable())
 		{
-			//TODO
 			int currentPC = containingProcessor.getRegisterFile().getProgramCounter(); //getting the PC value
 			int newInstruction = IF_OF_Latch.getInstruction(); 
-			
-			// Collecting the instruction passed by IF from IF_OF_Latch
-			OF_EX_Latch.setInstruction(newInstruction);
 			String bit_instruction = "";
 			bit_instruction = int_to_string(newInstruction); //Converting the Instruction in Integer to binary
-			// Immediate Calculation
-			String Immediate = bit_instruction.substring(15, 32);
-			//System.out.println(bit_instruction);
-			int Immediate_int;
-			if (Immediate.charAt(0) == '1') {
-				// If it's a negative number, calculate the two's complement
-				String twosComplement = "";
-				for (int i = 0; i < Immediate.length(); i++) {
-					// Flip all the bits (0s to 1s, and 1s to 0s)
-					twosComplement += (Immediate.charAt(i) == '0') ? '1' : '0';
+			String Opcode = bit_instruction.substring(0,5);
+			String Operation_type = control_unit.map_operation_type.get(Opcode);
+			//System.out.println(Operation_type);
+			if(Operation_type == "r3"){
+				String rs1 = bit_instruction.substring(5,10);
+				String rs2 = bit_instruction.substring(10,15);
+				String rd = bit_instruction.substring(15,20);
+				int rs1_int = Integer.parseInt(rs1,2);
+				int rs2_int = Integer.parseInt(rs2,2);
+				int rd_int = Integer.parseInt(rd,2);
+				int operand1 = containingProcessor.getRegisterFile().getValue(rs1_int);
+				int operand2 = containingProcessor.getRegisterFile().getValue(rs2_int);
+				OF_EX_Latch.setInstruction(newInstruction);
+				OF_EX_Latch.setOperand1(operand1);
+				OF_EX_Latch.setOperand2(operand2);
+				OF_EX_Latch.setrd(rd_int);
+				/*System.out.println(Operation_type);
+				System.out.println("Reg 1:"+rs1_int);
+				System.out.println("Reg 2:" + rs2_int);
+				System.out.println("Dest Reg:" + rd_int);
+				System.out.println("Value of R1:"+operand1);
+				System.out.println("Value of R2:" +operand2);
+				//System.out.println("......................................");
+				*/
+			}
+			else if(Operation_type == "r2i"){
+				String rs1 = bit_instruction.substring(5,10);
+				String rd = bit_instruction.substring(10,15);
+				String Immediate = bit_instruction.substring(15,32);
+				int Immediate_int;
+				if (Immediate.charAt(0) == '1') {
+					String twosComplement = "";
+					for (int i = 0; i < Immediate.length(); i++) {
+						twosComplement += (Immediate.charAt(i) == '0') ? '1' : '0';
+					}
+					Immediate_int = -(Integer.parseInt(twosComplement, 2) + 1);
+				} else {
+					Immediate_int = Integer.parseInt(Immediate, 2);
 				}
-				// Convert the two's complement to its integer representation
-				Immediate_int = -(Integer.parseInt(twosComplement, 2) + 1);
-			} else {
-				// If it's a positive number, convert the binary string to an integer directly
-				Immediate_int = Integer.parseInt(Immediate, 2);
+				int rs1_int = Integer.parseInt(rs1,2);
+				int rd_int = Integer.parseInt(rd,2);
+				//int Immediate_int = Integer.parseInt(Immediate);
+				int operand_rs1 = containingProcessor.getRegisterFile().getValue(rs1_int);
+				int operand_rd = containingProcessor.getRegisterFile().getValue(rd_int);
+				OF_EX_Latch.setInstruction(newInstruction);
+				OF_EX_Latch.setOperand1(operand_rs1);
+				OF_EX_Latch.setImmediate(Immediate_int);
+				OF_EX_Latch.setrd(rd_int);
+				OF_EX_Latch.setrd_store_value(operand_rd);
+				/*System.out.println(Operation_type);
+				System.out.println("Reg 1:"+rs1_int);
+				System.out.println("Reg Dest:"+rd_int);
+				System.out.println("Immediate Value"+Immediate_int);
+				System.out.println("Value of Reg 1:" + operand_rs1);
+				System.out.println("Store Register" +operand_rd);
+				//System.out.println("......................................");
+				*/
+			
+
+			}
+			else{  //for operation_type == ri
+				String rd = bit_instruction.substring(5,10);
+				String Immediate = bit_instruction.substring(10,32);
+				int Immediate_int;
+				if (Immediate.charAt(0) == '1') {
+					String twosComplement = "";
+					for (int i = 0; i < Immediate.length(); i++) {
+						twosComplement += (Immediate.charAt(i) == '0') ? '1' : '0';
+					}
+					Immediate_int = -(Integer.parseInt(twosComplement, 2) + 1);
+				} else {
+					Immediate_int = Integer.parseInt(Immediate, 2);
+				}
+				//System.out.println("......................................");
+				int rd_int = Integer.parseInt(rd,2);
+				int operand_rd = containingProcessor.getRegisterFile().getValue(rd_int);
+				OF_EX_Latch.setrd(rd_int);
+				OF_EX_Latch.setImmediate(Immediate_int);
 			}
 
-
-
-
-
-
-
-
-
-			OF_EX_Latch.setImmediate(Immediate_int);
-			// Branch Target Calculation
-			String BranchTarget = bit_instruction.substring(0,22);
-			int BranchTarget_int = Integer.parseInt(BranchTarget,2);
-			//System.out.println(BranchTarget_int);
-			OF_EX_Latch.setBranchTarget(BranchTarget_int);
-			// Calculating Operands
-			//Calculating the register for operand1 rs1 : 22 : 26 bits
-			String Operand1 = bit_instruction.substring(5,10);
-			int Operand1_Reg = Integer.parseInt(Operand1,2);
-
-			//Calculating the registers for rd and rs2 for Operand2 : rd : 12:16, rs2 : 17 : 21
-			String rd = bit_instruction.substring(15,20);
-			String rs2 = bit_instruction.substring(10,15);
-			int rd_int = Integer.parseInt(rd,2);
-			int rs2_int = Integer.parseInt(rs2,2);
-			String Opcode = bit_instruction.substring(0,5);
-			int Opcode_int = Integer.parseInt(Opcode,2);
-			int Operand2_Reg = rs2_int;
-			
-			// Fetching Operand1 and Operand2 from Register File
-
-			int Operand1_int = containingProcessor.getRegisterFile().getValue(Operand1_Reg);
-			int Operand2_int = containingProcessor.getRegisterFile().getValue(Operand2_Reg);
-			int OperandD = containingProcessor.getRegisterFile().getValue(rd_int);
-			OF_EX_Latch.setOperand1(Operand1_int);
-			OF_EX_Latch.setOperand2(Operand2_int);
-			OF_EX_Latch.setrd(OperandD);
-			control_unit.setop2(Operand2_Reg);
-			control_unit.setop1(Operand1_Reg);
-			// Sending the Opcode for the Control Unit for Generating Signals
-			
-			/*if(Opcode_int != 0){
-				System.out.println(Operand1_int);
-				System.out.println(Operand2_int);
-				System.out.println(Immediate_int);
-				System.out.println(BranchTarget_int);
-			}*/
 			control_unit.setOpcode(Opcode);
 			IF_OF_Latch.setOF_enable(false);
 			OF_EX_Latch.setEX_enable(true);
-			System.out.println(Immediate_int);
-		}
+			}
+
 	}
 
 }
